@@ -1,7 +1,7 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-      <TodoHeader :addItem="addItem"/>
+      <TodoHeader @addItem="addItem"/> <!-- 给todoheader标签对象绑定addItem事件监听-->
       <TodoList :todos="todos" :deleteItem="deleteItem"/>
       <TodoFooter :todos="todos" :deleteCompleteItem="deleteCompleteItem" :isAllCheck="isAllCheck"/>
     </div>

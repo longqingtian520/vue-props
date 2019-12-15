@@ -7,12 +7,12 @@
 <script>
   export default {
     name: 'TodoHeader',
-    props: {
-       addItem: {
-        type: Function,
-        required: true
-      }
-    },
+    // props: {
+    //    addItem: {
+    //     type: Function,
+    //     required: true
+    //   }
+    // },
     data () {
       return {
         title: ''
@@ -30,7 +30,8 @@
         const todo = {title, complete: false}
 
         // 添加到todos
-        this.addItem(todo)
+        // this.addItem(todo)
+        this.$emit('addItem', todo)
         // 清除输入
         this.title = ''
       }
