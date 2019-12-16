@@ -3,7 +3,11 @@
     <div class="todo-wrap">
       <TodoHeader @addItem="addItem"/> <!-- 给todoheader标签对象绑定addItem事件监听-->
       <TodoList :todos="todos" :deleteItem="deleteItem"/>
-      <TodoFooter :todos="todos" :deleteCompleteItem="deleteCompleteItem" :isAllCheck="isAllCheck"/>
+      <TodoFooter >
+        <input type="checkbox" v-model="allCheck" slot="allcheck"/>
+        <span slot="size">已完成{{completeSize}} / 全部{{this.todos.length}}</span>
+        <button  class="btn btn-danger" @click="deleteFinished" v-show="completeSize" slot="delete">清除已完成任务</button>
+      </TodoFooter>
     </div>
   </div>
 </template>
@@ -27,6 +31,19 @@
         todos: JSON.parse(window.localStorage.getItem('todo_key') || '[]')
       }
     },
+    computed: {
+      completeSize () {
+        return this.todos.reduce((preNum, todo) => preNum + (todo.complete ? 1 : 0), 0)
+      },
+      allCheck: {
+        get () {
+          return this.completeSize == this.todos.length && this.completeSize > 0
+        },
+        set (value) { // value是CheckBox最新的值
+          this.isAllCheck(value)
+        }
+      }
+    },
     methods: {
       addItem (todo) {
         this.todos.unshift(todo)
@@ -42,6 +59,11 @@
           this.todos.forEach(todo => todo.complete = true)
         } else {
           this.todos.forEach(todo => todo.complete = false)
+        }
+      },
+      deleteFinished () {
+        if (window.confirm('确定要清除已完成的任务吗？')) {
+          this.deleteCompleteItem()
         }
       }
     },
