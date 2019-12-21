@@ -17,6 +17,7 @@
   import TodoFooter from './components/TodoFooter'
   import TodoHeader from './components/TodoHeader'
   import TodoList from './components/TodoList'
+  import storageUtil from './utils/storageUtil'
 
   export default {
     name: 'App',
@@ -28,7 +29,7 @@
     },
     data () {
       return {
-        todos: JSON.parse(window.localStorage.getItem('todo_key') || '[]')
+        todos: storageUtil.getTodos()
       }
     },
     computed: {
@@ -49,6 +50,7 @@
         this.todos.unshift(todo)
       },
       deleteItem (index) {
+        console.log(index)
         this.todos.splice(index, 1)
       },
       deleteCompleteItem () {
@@ -71,7 +73,7 @@
       todos: {
         deep: true, // 深度监视
         handler: function (value) {
-          window.localStorage.setItem('todo_key', JSON.stringify(value))
+          storageUtil.saveTodos(value)
         }
       }
     }
